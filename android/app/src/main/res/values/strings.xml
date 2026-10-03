@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Muhaqqiq</string>
-    <string name="title_activity_main">Muhaqqiq</string>
+    <string name="app_name">&#x627;&#x644;&#x645;&#x62D;&#x642;&#x642;</string>
+    <string name="title_activity_main">&#x627;&#x644;&#x645;&#x62D;&#x642;&#x642;</string>
     <string name="package_name">com.yourname.muhaqqiq</string>
     <string name="custom_url_scheme">com.yourname.muhaqqiq</string>
 </resources>
