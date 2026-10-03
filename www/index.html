@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>المحقق</title>
+<link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e1c2b;--bg2:#17304a;--paper:#efe6d2;--ink:#1d2733;--brass:#d2a64a;--red:#b3392f;--green:#2f7d5b;--mute:#8fa3b8;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100vh;background:radial-gradient(120% 70% at 50% 0,var(--bg2),var(--bg) 70%) var(--bg);color:#f4ecd8;font-family:Tajawal,system-ui,sans-serif;display:flex;justify-content:center}
+#app{width:100%;max-width:460px;padding:16px 18px 24px;display:flex;flex-direction:column;min-height:100vh}
+h1,h2,.k{font-family:'Reem Kufi',Tajawal,sans-serif}
+button{font:inherit;color:inherit;cursor:pointer;border:0}
+button:focus-visible{outline:3px solid var(--brass);outline-offset:2px}
+.home{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px}
+.lens{width:150px;height:150px}
+.home h1{font-size:64px;margin:0;color:var(--brass);letter-spacing:1px;line-height:1}
+.home p{margin:0;color:var(--mute);font-size:17px;max-width:300px;line-height:1.7}
+.cats{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:6px 0}
+.cats span{border:1px solid #3a5470;border-radius:99px;padding:6px 14px;font-size:14px;color:#cdd8e4}
+.cta{background:var(--brass);color:#2a2008;font-family:'Reem Kufi';font-weight:700;font-size:22px;padding:14px 44px;border-radius:14px;box-shadow:0 6px 0 #8c6c25;transition:transform .08s,box-shadow .08s}
+.cta:active{transform:translateY(5px);box-shadow:0 1px 0 #8c6c25}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.rank{font-family:'Reem Kufi';color:var(--brass);font-size:18px}
+.score{font-size:14px;color:var(--mute)}
+.ladder{display:flex;gap:5px;margin:12px 0}
+.ladder i{flex:1;height:7px;border-radius:4px;background:#27415b;transition:background .4s}
+.ladder i.d{background:var(--brass)}.ladder i.c{background:#f4ecd8;animation:pl 1s infinite}
+@keyframes pl{50%{opacity:.4}}
+.timer{position:relative;width:54px;height:54px;flex:none}
+.timer svg{transform:rotate(-90deg)}
+.timer b{position:absolute;inset:0;display:grid;place-items:center;font-family:'Reem Kufi';font-size:19px}
+.file{position:relative;background:var(--paper);color:var(--ink);border-radius:6px 6px 14px 14px;padding:22px 20px 20px;margin-top:10px;box-shadow:0 14px 30px #0008;transform:rotate(-.6deg);animation:in .45s cubic-bezier(.2,.9,.3,1.2)}
+.file:before{content:"";position:absolute;top:-12px;right:22px;width:96px;height:14px;background:#cdbf9e;border-radius:6px 6px 0 0}
+@keyframes in{from{transform:translateY(30px) rotate(2deg);opacity:0}}
+.tag{display:inline-block;font-size:13px;font-weight:700;color:var(--red);border:1.5px solid var(--red);border-radius:6px;padding:1px 9px;margin-bottom:10px}
+.q{font-family:'Reem Kufi';font-size:23px;line-height:1.65;margin:0}
+.opts{display:grid;gap:10px;margin:16px 0 12px}
+.opt{display:flex;align-items:center;gap:12px;text-align:right;background:#13283d;border:1.5px solid #34506c;border-radius:14px;padding:14px;font-size:18px;font-weight:500;transition:transform .12s,background .2s,border-color .2s}
+.opt:active{transform:scale(.98)}
+.opt em{font-style:normal;font-family:'Reem Kufi';width:30px;height:30px;border-radius:50%;background:#27415b;display:grid;place-items:center;flex:none;color:var(--brass)}
+.opt.gone{opacity:.15;pointer-events:none;text-decoration:line-through}
+.opt.ok{background:var(--green);border-color:#7be0b0;animation:pop .4s}
+.opt.no{background:var(--red);border-color:#ff9a8f;animation:shake .4s}
+@keyframes pop{50%{transform:scale(1.04)}}
+@keyframes shake{25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.bar{height:6px;border-radius:3px;background:var(--brass);margin-inline-start:auto;width:0;transition:width .7s}
+.help{display:flex;gap:8px}
+.help button{flex:1;background:#13283d;border:1.5px solid #34506c;border-radius:12px;padding:9px 4px;font-size:13px;line-height:1.4}
+.help button b{display:block;font-size:20px}
+.help button:disabled{opacity:.3}
+.fact{background:#0b1724;border:1px dashed var(--brass);border-radius:14px;padding:14px 16px;margin-top:12px;font-size:16px;line-height:1.75;animation:in .4s}
+.fact strong{color:var(--brass);font-family:'Reem Kufi'}
+.next{margin-top:12px;width:100%}
+.stamp{position:absolute;left:14px;top:12px;font-family:'Reem Kufi';font-size:26px;font-weight:700;border:3px solid;border-radius:8px;padding:0 12px;transform:rotate(-12deg);animation:st .35s cubic-bezier(.2,2,.4,1)}
+.stamp.ok{color:var(--green)}.stamp.no{color:var(--red)}
+@keyframes st{from{transform:rotate(-12deg) scale(3);opacity:0}}
+.end{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px}
+.end h2{font-size:40px;color:var(--brass);margin:0}
+.end .big{font-family:'Reem Kufi';font-size:26px}
+.hint{margin-top:8px;font-size:14px;color:var(--ink);background:#e2d6b9;border-radius:8px;padding:6px 10px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const Q=[
+["جغرافيا","ما أكبر قارة في العالم من حيث المساحة؟",["آسيا","أفريقيا","أوروبا","أمريكا الشمالية"],0,"آسيا تشكّل قرابة 30% من يابسة الأرض، ويعيش فيها أكثر من نصف سكان العالم."],
+["عالم الحيوان","أي هذه الحيوانات يملك أطول عنق؟",["الفيل","الزرافة","النعامة","الجمل"],1,"عنق الزرافة يقارب مترين، ومع ذلك فيه 7 فقرات فقط، وهو نفس عدد فقرات عنق الإنسان!"],
+["تاريخ","من مؤسس الدولة الأموية؟",["عبدالملك بن مروان","أبو العباس السفاح","معاوية بن أبي سفيان","الوليد بن عبدالملك"],2,"قامت الدولة الأموية عام 41هـ واتخذت دمشق عاصمة لها."],
+["علوم","ما الغاز الأكثر وجوداً في الغلاف الجوي؟",["الأكسجين","النيتروجين","ثاني أكسيد الكربون","الهيدروجين"],1,"النيتروجين يشكّل نحو 78% من الهواء الذي نتنفسه، والأكسجين نحو 21% فقط."],
+["آداب","من هو صاحب لقب «أمير الشعراء»؟",["حافظ إبراهيم","المتنبي","نزار قباني","أحمد شوقي"],3,"بُويع أحمد شوقي بإمارة الشعر عام 1927 في حفل حضره شعراء العرب."],
+["أمثال","أكمل المثل: «الوقت كالسيف، إن لم تقطعه...»",["قطعك","كسرك","تركك","جرحك"],0,"المثل يحثّ على اغتنام الوقت قبل أن يضيع، ويُنسب معناه إلى الحكمة العربية القديمة."],
+["عالم الحيوان","كم عدد قلوب الأخطبوط؟",["قلب واحد","قلبان","ثلاثة قلوب","أربعة قلوب"],2,"لدى الأخطبوط 3 قلوب: اثنان للخياشيم وواحد للجسم، ودمه أزرق اللون!"],
+["تاريخ","في أي عام فتح محمد الفاتح القسطنطينية؟",["1258م","1492م","1517م","1453م"],3,"سقطت القسطنطينية في 29 مايو 1453م، ويُعدّ هذا الحدث نهاية العصور الوسطى عند كثير من المؤرخين."],
+["جغرافيا","ما أعمق محيط في العالم؟",["الهادئ","الأطلسي","الهندي","المتجمد الشمالي"],0,"الهادئ أكبر المحيطات وأعمقها، وفيه خندق ماريانا الذي يتجاوز عمقه 10 كيلومترات."],
+["ألغاز","ما الشيء الذي كلما أخذتَ منه كَبُر؟",["الظل","الحفرة","العمر","الدَّين"],1,"الحفرة! كل ما أخرجت منها ترابًا اتسعت أكثر. الألغاز تدرّب العقل على التفكير الجانبي."]
+];
+const RANKS=["متدرب","محقق مبتدئ","محقق","محقق أول","رقيب","ملازم","نقيب","مفتش","مفتش أول","كبير المحققين"];
+const $=s=>document.querySelector(s),app=$("#app");
+let i,score,help,timer,left,locked,order,hidden;
+const vib=n=>navigator.vibrate&&navigator.vibrate(n);
+function home(){
+app.innerHTML=`<div class="home">
+<svg class="lens" viewBox="0 0 120 120" fill="none"><circle cx="50" cy="50" r="32" stroke="#d2a64a" stroke-width="7"/><circle cx="50" cy="50" r="24" fill="#17304a"/><path d="M39 44a14 14 0 0 1 12-9" stroke="#efe6d2" stroke-width="4" stroke-linecap="round"/><path d="M74 74l30 30" stroke="#d2a64a" stroke-width="11" stroke-linecap="round"/><path d="M30 10l20-8 20 8-20 7z" fill="#0b1724" stroke="#d2a64a" stroke-width="3" transform="translate(0 -2)"/></svg>
+<h1 class="k">المحقق</h1>
+<p>كل سؤال قضية، وكل إجابة صحيحة تقرّبك من لقب كبير المحققين.</p>
+<div class="cats"><span>تاريخ</span><span>آداب</span><span>عالم الحيوان</span><span>علوم</span><span>جغرافيا</span><span>ألغاز</span></div>
+<button class="cta" id="go">ابدأ التحقيق</button></div>`;
+$("#go").onclick=start}
+function start(){i=0;score=0;help={clue:1,wit:1,exp:1};ask()}
+function ask(){
+const [cat,q,o,c]=Q[i];
+order=o.map((t,k)=>k).sort(()=>Math.random()-.5);hidden=[];locked=false;left=20;
+app.innerHTML=`<div class="top"><div><div class="rank">${RANKS[i]}</div><div class="score">${score} نقطة</div></div>
+<div class="timer"><svg width="54" height="54"><circle cx="27" cy="27" r="23" fill="none" stroke="#27415b" stroke-width="5"/><circle id="ring" cx="27" cy="27" r="23" fill="none" stroke="#d2a64a" stroke-width="5" stroke-linecap="round" stroke-dasharray="144.5" stroke-dashoffset="0"/></svg><b id="t">20</b></div></div>
+<div class="ladder">${RANKS.map((r,k)=>`<i class="${k<i?'d':k==i?'c':''}"></i>`).join("")}</div>
+<div class="file" id="file"><span class="tag">قضية ${i+1} · ${cat}</span><p class="q">${q}</p><div id="hint"></div></div>
+<div class="opts" id="opts">${order.map((k,n)=>`<button class="opt" data-k="${k}"><em>${"أبجد"[n]}</em><span>${o[k]}</span><div class="bar"></div></button>`).join("")}</div>
+<div class="help"><button id="h1" ${help.clue?"":"disabled"}><b>🔍</b>كشف دليل</button><button id="h2" ${help.wit?"":"disabled"}><b>👥</b>استشارة شاهد</button><button id="h3" ${help.exp?"":"disabled"}><b>🎩</b>اتصال بخبير</button></div><div id="after"></div>`;
+document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>pick(+b.dataset.k,b));
+$("#h1").onclick=clue;$("#h2").onclick=witness;$("#h3").onclick=expert;
+clearInterval(timer);timer=setInterval(tick,1000)}
+function tick(){left--;$("#t").textContent=left;$("#ring").style.strokeDashoffset=144.5*(1-left/20);if(left<=5)vib(15);if(left<=0){clearInterval(timer);pick(-1)}}
+function use(k,id){help[k]=0;$(id).disabled=true}
+function clue(){if(locked||!help.clue)return;use("clue","#h1");const c=Q[i][3];const w=[0,1,2,3].filter(k=>k!=c).sort(()=>Math.random()-.5).slice(0,2);hidden=w;w.forEach(k=>document.querySelector(`.opt[data-k="${k}"]`).classList.add("gone"));vib(30)}
+function witness(){if(locked||!help.wit)return;use("wit","#h2");const c=Q[i][3];const live=[0,1,2,3].filter(k=>!hidden.includes(k));let p={},r=100,main=45+Math.random()*30|0;live.forEach(k=>p[k]=0);p[c]=main;r-=main;live.filter(k=>k!=c).forEach((k,n,a)=>{const v=n==a.length-1?r:Math.random()*r|0;p[k]=v;r-=v});live.forEach(k=>{const b=document.querySelector(`.opt[data-k="${k}"] .bar`);b.style.width=Math.max(p[k],4)*.45+"%";b.title=p[k]})}
+function expert(){if(locked||!help.exp)return;use("exp","#h3");const c=Q[i][3],live=[0,1,2,3].filter(k=>!hidden.includes(k)&&k!=c);const say=Math.random()<.85?c:live[0];$("#hint").innerHTML=`<div class="hint">🎩 الخبير: «أميل إلى «${Q[i][2][say]}»، لكن القرار لك أيها المحقق.»</div>`}
+function pick(k,btn){
+if(locked)return;locked=true;clearInterval(timer);
+const [cat,q,o,c,f]=Q[i],ok=k===c;
+document.querySelectorAll(".opt").forEach(b=>{b.style.pointerEvents="none";if(+b.dataset.k===c)b.classList.add("ok")});
+if(btn&&!ok)btn.classList.add("no");
+$("#file").insertAdjacentHTML("beforeend",`<div class="stamp ${ok?'ok':'no'}">${ok?'قضية محلولة':k<0?'انتهى الوقت':'قضية فاشلة'}</div>`);
+vib(ok?[20]:[80,40,80]);
+if(ok)score+=100*(i+1)+left*5;
+const last=i==Q.length-1;
+$("#after").innerHTML=`<div class="fact"><strong>ملف المعلومة:</strong> ${f}</div><button class="cta next" id="nx">${ok?(last?'أغلق القضية الأخيرة':'القضية التالية'):'انتهى التحقيق'}</button>`;
+$("#nx").onclick=()=>{ok&&!last?(i++,ask()):end(ok)}}
+function end(won){
+const r=won?RANKS[RANKS.length-1]:RANKS[Math.max(i-1,0)];
+app.innerHTML=`<div class="end"><h2 class="k">${won?'أحسنت يا كبير المحققين':'التحقيق لم ينتهِ بعد'}</h2><div class="big">رتبتك: ${won?r:(i?r:'متدرب')}</div><p style="color:#8fa3b8;font-size:18px;margin:0">جمعت ${score} نقطة</p><button class="cta" id="re">تحقيق جديد</button></div>`;
+$("#re").onclick=start}
+home();
+</script>
+</body>
+</html>
