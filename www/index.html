@@ -63,68 +63,120 @@ button:focus-visible{outline:3px solid var(--brass);outline-offset:2px}
 .end .big{font-family:'Reem Kufi';font-size:26px}
 .hint{margin-top:8px;font-size:14px;color:var(--ink);background:#e2d6b9;border-radius:8px;padding:6px 10px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.home{justify-content:flex-start;padding-top:8px;gap:10px}
+.lens{width:84px;height:84px}.home h1{font-size:46px}.home p{font-size:16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
+.card{display:flex;flex-direction:column;align-items:center;gap:3px;background:#13283d;border:1.5px solid #34506c;border-radius:16px;padding:14px 8px;transition:transform .12s,border-color .2s}
+.card:active{transform:scale(.96);border-color:var(--brass)}
+.card .ic{font-size:30px}.card b{font-size:20px;color:var(--brass)}
+.card small{color:#cdd8e4;font-size:13px}.card u{text-decoration:none;color:var(--mute);font-size:12px;margin-top:4px}
+.back{background:#13283d;border:1.5px solid #34506c;border-radius:50%;width:38px;height:38px;font-size:16px;flex:none}
+.top{gap:12px}
+.ghost{background:none;border:1.5px solid #34506c;border-radius:14px;padding:12px 36px;font-size:17px}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <script>
-const Q=[
-["جغرافيا","ما أكبر قارة في العالم من حيث المساحة؟",["آسيا","أفريقيا","أوروبا","أمريكا الشمالية"],0,"آسيا تشكّل قرابة 30% من يابسة الأرض، ويعيش فيها أكثر من نصف سكان العالم."],
-["عالم الحيوان","أي هذه الحيوانات يملك أطول عنق؟",["الفيل","الزرافة","النعامة","الجمل"],1,"عنق الزرافة يقارب مترين، ومع ذلك فيه 7 فقرات فقط، وهو نفس عدد فقرات عنق الإنسان!"],
-["تاريخ","من مؤسس الدولة الأموية؟",["عبدالملك بن مروان","أبو العباس السفاح","معاوية بن أبي سفيان","الوليد بن عبدالملك"],2,"قامت الدولة الأموية عام 41هـ واتخذت دمشق عاصمة لها."],
-["علوم","ما الغاز الأكثر وجوداً في الغلاف الجوي؟",["الأكسجين","النيتروجين","ثاني أكسيد الكربون","الهيدروجين"],1,"النيتروجين يشكّل نحو 78% من الهواء الذي نتنفسه، والأكسجين نحو 21% فقط."],
-["آداب","من هو صاحب لقب «أمير الشعراء»؟",["حافظ إبراهيم","المتنبي","نزار قباني","أحمد شوقي"],3,"بُويع أحمد شوقي بإمارة الشعر عام 1927 في حفل حضره شعراء العرب."],
-["أمثال","أكمل المثل: «الوقت كالسيف، إن لم تقطعه...»",["قطعك","كسرك","تركك","جرحك"],0,"المثل يحثّ على اغتنام الوقت قبل أن يضيع، ويُنسب معناه إلى الحكمة العربية القديمة."],
-["عالم الحيوان","كم عدد قلوب الأخطبوط؟",["قلب واحد","قلبان","ثلاثة قلوب","أربعة قلوب"],2,"لدى الأخطبوط 3 قلوب: اثنان للخياشيم وواحد للجسم، ودمه أزرق اللون!"],
-["تاريخ","في أي عام فتح محمد الفاتح القسطنطينية؟",["1258م","1492م","1517م","1453م"],3,"سقطت القسطنطينية في 29 مايو 1453م، ويُعدّ هذا الحدث نهاية العصور الوسطى عند كثير من المؤرخين."],
-["جغرافيا","ما أعمق محيط في العالم؟",["الهادئ","الأطلسي","الهندي","المتجمد الشمالي"],0,"الهادئ أكبر المحيطات وأعمقها، وفيه خندق ماريانا الذي يتجاوز عمقه 10 كيلومترات."],
-["ألغاز","ما الشيء الذي كلما أخذتَ منه كَبُر؟",["الظل","الحفرة","العمر","الدَّين"],1,"الحفرة! كل ما أخرجت منها ترابًا اتسعت أكثر. الألغاز تدرّب العقل على التفكير الجانبي."]
-];
-const RANKS=["متدرب","محقق مبتدئ","محقق","محقق أول","رقيب","ملازم","نقيب","مفتش","مفتش أول","كبير المحققين"];
+const DB={
+"تاريخ":{i:"🏛",d:"حضارات ومعارك وقادة",q:[
+["أي حضارة بنت أهرامات الجيزة؟",["الرومانية","المصرية القديمة","البابلية","الفارسية"],1,"هرم خوفو أكبرها، وبقي أعلى بناء صنعه الإنسان نحو 3800 سنة."],
+["من مؤسس الدولة الأموية؟",["عبدالملك بن مروان","أبو العباس السفاح","معاوية بن أبي سفيان","الوليد بن عبدالملك"],2,"قامت الدولة الأموية عام 41هـ واتخذت دمشق عاصمة لها."],
+["من القائد الذي عبر بجيشه لفتح الأندلس؟",["موسى بن نصير","طارق بن زياد","خالد بن الوليد","عقبة بن نافع"],1,"عبر طارق المضيق عام 92هـ (711م)، وسُمّي الجبل هناك «جبل طارق» نسبة إليه."],
+["في أي معركة استعاد صلاح الدين بيت المقدس عام 1187م؟",["القادسية","اليرموك","حطين","عين جالوت"],2,"انتصار حطين فتح الطريق لتحرير القدس بعد نحو 88 عاماً من الاحتلال الصليبي."],
+["في أي عام فتح محمد الفاتح القسطنطينية؟",["1258م","1492م","1517م","1453م"],3,"سقطت القسطنطينية في 29 مايو 1453م، وهو حدث يعدّه كثير من المؤرخين نهاية العصور الوسطى."],
+["في أي عام سقطت بغداد على يد المغول؟",["1099م","1258م","1187م","1453م"],1,"دمّر المغول بغداد بقيادة هولاكو، وضاعت فيها مكتبات ومخطوطات لا تُقدَّر بثمن."]]},
+"آداب":{i:"📜",d:"شعر وأمثال وأدباء",q:[
+["من هو صاحب لقب «أمير الشعراء»؟",["حافظ إبراهيم","المتنبي","نزار قباني","أحمد شوقي"],3,"بُويع أحمد شوقي بإمارة الشعر عام 1927 في حفل حضره شعراء العرب."],
+["أكمل المثل: «الوقت كالسيف، إن لم تقطعه...»",["قطعك","كسرك","تركك","جرحك"],0,"المثل يحثّ على اغتنام الوقت قبل أن يضيع."],
+["من ترجم كتاب «كليلة ودمنة» إلى العربية؟",["الجاحظ","ابن المقفع","المعري","ابن قتيبة"],1,"نقله ابن المقفع من الفارسية في العصر العباسي، وهو حكايات على ألسنة الحيوان."],
+["من شاعر المعلقة التي تبدأ بـ«قفا نبكِ»؟",["عنترة","زهير بن أبي سلمى","امرؤ القيس","لبيد"],2,"يُلقّب امرؤ القيس بالملك الضليل، ومعلقته من أشهر قصائد العصر الجاهلي."],
+["من صاحب كتاب «المقدّمة» ومؤسس علم الاجتماع؟",["ابن رشد","الفارابي","ابن سينا","ابن خلدون"],3,"كتب ابن خلدون المقدمة عام 1377م، وحلّل فيها قيام الدول وسقوطها."],
+["من أول عربي ينال جائزة نوبل في الأدب؟",["طه حسين","نجيب محفوظ","توفيق الحكيم","يوسف إدريس"],1,"نال نجيب محفوظ جائزة نوبل عام 1988، وأشهر أعماله «الثلاثية»."]]},
+"عالم الحيوان":{i:"🦒",d:"عجائب المخلوقات",q:[
+["أي حيوان يُلقّب بسفينة الصحراء؟",["الحصان","الجمل","الحمار","الفيل"],1,"سنام الجمل يخزّن دهوناً لا ماءً، ويستطيع الصبر أياماً بلا شرب."],
+["أي هذه الحيوانات يملك أطول عنق؟",["الفيل","الزرافة","النعامة","الجمل"],1,"عنق الزرافة يقارب مترين، وفيه 7 فقرات فقط كعنق الإنسان!"],
+["ما أسرع حيوان بري؟",["الأسد","النمر","الفهد","الحصان"],2,"يصل الفهد إلى نحو 100 كم/س، لكن لمسافات قصيرة جداً."],
+["كم عدد قلوب الأخطبوط؟",["قلب واحد","قلبان","ثلاثة قلوب","أربعة قلوب"],2,"3 قلوب: اثنان للخياشيم وواحد للجسم، ودمه أزرق!"],
+["كم عدد أرجل العنكبوت؟",["ست","ثمانٍ","عشر","أربع"],1,"العنكبوت ليس حشرة، بل من العنكبيات ولذلك له 8 أرجل."],
+["ما أكبر حيوان عرفته الأرض؟",["الفيل الأفريقي","القرش الحوتي","الحوت الأزرق","الديناصور"],2,"الحوت الأزرق يتجاوز طوله 25 متراً، ووزنه قد يفوق 150 طناً."]]},
+"علوم":{i:"🔬",d:"الكون والجسم والمادة",q:[
+["ما الكوكب الأقرب إلى الشمس؟",["الزهرة","عطارد","المريخ","الأرض"],1,"يدور عطارد حول الشمس في نحو 88 يوماً أرضياً فقط."],
+["ما الرمز الكيميائي للذهب؟",["Ag","Go","Au","Fe"],2,"الرمز Au من الكلمة اللاتينية aurum وتعني الذهب."],
+["ما الغاز الأكثر وجوداً في الغلاف الجوي؟",["الأكسجين","النيتروجين","ثاني أكسيد الكربون","الهيدروجين"],1,"النيتروجين يشكّل نحو 78% من الهواء، والأكسجين نحو 21% فقط."],
+["كم عدد عظام جسم الإنسان البالغ؟",["156","256","206","306"],2,"يولد الطفل بنحو 300 عظمة، وتلتحم بعضها مع النمو حتى تصبح 206."],
+["ما أصلب مادة طبيعية معروفة؟",["الحديد","الألماس","الكوارتز","الذهب"],1,"الألماس يتكوّن من ذرات الكربون، وهو نفس عنصر الفحم لكن بترتيب مختلف."],
+["كم تبلغ سرعة الضوء تقريباً؟",["300 ألف كم/ث","30 ألف كم/ث","3 ملايين كم/ث","3 آلاف كم/ث"],0,"يصل ضوء الشمس إلى الأرض في نحو 8 دقائق."]]},
+"جغرافيا":{i:"🧭",d:"دول وعواصم وبحار",q:[
+["ما عاصمة اليابان؟",["أوساكا","كيوتو","طوكيو","سابورو"],2,"طوكيو تُعدّ من أكبر المدن في العالم من حيث السكان."],
+["ما أكبر قارة في العالم من حيث المساحة؟",["آسيا","أفريقيا","أوروبا","أمريكا الشمالية"],0,"آسيا تشكّل قرابة 30% من يابسة الأرض، ويعيش فيها أكثر من نصف سكان العالم."],
+["ما أكبر صحراء حارة في العالم؟",["الربع الخالي","النقب","غوبي","الصحراء الكبرى"],3,"الصحراء الكبرى في أفريقيا تقارب في مساحتها الولايات المتحدة."],
+["ما أعمق محيط في العالم؟",["الهادئ","الأطلسي","الهندي","المتجمد الشمالي"],0,"في المحيط الهادئ خندق ماريانا، وعمقه يتجاوز 10 كيلومترات."],
+["ما عاصمة أستراليا؟",["سيدني","ملبورن","بيرث","كانبرا"],3,"يظن كثيرون أنها سيدني، لكن كانبرا اختيرت كحلّ وسط بين سيدني وملبورن."],
+["ما أصغر دولة في العالم مساحة؟",["موناكو","الفاتيكان","سان مارينو","ليختنشتاين"],1,"الفاتيكان مساحتها نحو 0.44 كم² فقط، أي أصغر من كثير من الحدائق العامة."]]},
+"ألغاز":{i:"🧩",d:"فكّر خارج الصندوق",q:[
+["ما الشيء الذي يكتب ولا يقرأ؟",["القلم","الكتاب","الحبر","الورقة"],0,"ألغاز السؤال والجواب من أقدم فنون التسلية عند العرب."],
+["ما الشيء الذي له أسنان ولا يعضّ؟",["المنشار","المشط","الثعبان","المفتاح"],1,"أجوبة قريبة مثل المنشار تُربك العقل، لكن المشط يطابق اللغز تماماً."],
+["ما الذي يمشي بلا رجلين ويبكي بلا عينين؟",["الريح","السحاب","النهر","الظل"],1,"بكاؤه هو المطر، وهو مثال على التشبيه البلاغي في الألغاز."],
+["ما الشيء الذي تملكه لكن غيرك يستخدمه أكثر منك؟",["هاتفك","بيتك","اسمك","سيارتك"],2,"اسمك ينادي به الناس أكثر مما تنادي به أنت نفسك."],
+["ما الشيء الذي كلما أخذتَ منه كَبُر؟",["الظل","الحفرة","العمر","الدَّين"],1,"كل ما أخرجت منها ترابًا اتسعت أكثر. هذا تفكير جانبي."],
+["عندك 3 تفاحات وأخذتَ منها 2. كم تفاحة معك؟",["واحدة","اثنتان","ثلاث","خمس"],1,"السؤال يقول «أخذتَ» لا «تركتَ»، فالتفاحتان اللتان أخذتهما معك."]]}
+};
+const MIX="تحقيق شامل",RANKS=["متدرب","محقق","محقق أول","رقيب","مفتش","كبير المحققين"];
 const $=s=>document.querySelector(s),app=$("#app");
-let i,score,help,timer,left,locked,order,hidden;
+let cat,list,i,score,help,timer,left,locked,hidden,solved;
 const vib=n=>navigator.vibrate&&navigator.vibrate(n);
+const shuf=a=>a.sort(()=>Math.random()-.5);
+function best(){try{return JSON.parse(localStorage.getItem("mq_best"))||{}}catch(e){return{}}}
+function save(c,s,n){try{const b=best();if(!b[c]||s>b[c].s)b[c]={s,n};localStorage.setItem("mq_best",JSON.stringify(b))}catch(e){}}
 function home(){
+const b=best();
 app.innerHTML=`<div class="home">
-<svg class="lens" viewBox="0 0 120 120" fill="none"><circle cx="50" cy="50" r="32" stroke="#d2a64a" stroke-width="7"/><circle cx="50" cy="50" r="24" fill="#17304a"/><path d="M39 44a14 14 0 0 1 12-9" stroke="#efe6d2" stroke-width="4" stroke-linecap="round"/><path d="M74 74l30 30" stroke="#d2a64a" stroke-width="11" stroke-linecap="round"/><path d="M30 10l20-8 20 8-20 7z" fill="#0b1724" stroke="#d2a64a" stroke-width="3" transform="translate(0 -2)"/></svg>
+<svg class="lens" viewBox="0 0 120 120" fill="none"><circle cx="50" cy="50" r="32" stroke="#d2a64a" stroke-width="7"/><circle cx="50" cy="50" r="24" fill="#17304a"/><path d="M39 44a14 14 0 0 1 12-9" stroke="#efe6d2" stroke-width="4" stroke-linecap="round"/><path d="M74 74l30 30" stroke="#d2a64a" stroke-width="11" stroke-linecap="round"/></svg>
 <h1 class="k">المحقق</h1>
-<p>كل سؤال قضية، وكل إجابة صحيحة تقرّبك من لقب كبير المحققين.</p>
-<div class="cats"><span>تاريخ</span><span>آداب</span><span>عالم الحيوان</span><span>علوم</span><span>جغرافيا</span><span>ألغاز</span></div>
-<button class="cta" id="go">ابدأ التحقيق</button></div>`;
-$("#go").onclick=start}
-function start(){i=0;score=0;help={clue:1,wit:1,exp:1};ask()}
+<p>اختر ملف القضايا الذي تريد التحقيق فيه</p>
+<div class="grid">${Object.entries(DB).map(([n,v])=>`<button class="card" data-c="${n}"><span class="ic">${v.i}</span><b class="k">${n}</b><small>${v.d}</small><u>${b[n]?`أفضل نتيجة: ${b[n].n}/6 · ${b[n].s}`:`${v.q.length} قضايا`}</u></button>`).join("")}</div>
+<button class="cta" data-c="${MIX}">${MIX}</button></div>`;
+document.querySelectorAll("[data-c]").forEach(e=>e.onclick=()=>start(e.dataset.c))}
+function start(c){
+cat=c;
+list=c==MIX?shuf(Object.entries(DB).map(([n,v])=>({c:n,q:v.q[Math.random()*v.q.length|0]}))):DB[c].q.map(q=>({c,q}));
+i=0;score=0;solved=0;help={clue:1,wit:1,exp:1};ask()}
 function ask(){
-const [cat,q,o,c]=Q[i];
-order=o.map((t,k)=>k).sort(()=>Math.random()-.5);hidden=[];locked=false;left=20;
-app.innerHTML=`<div class="top"><div><div class="rank">${RANKS[i]}</div><div class="score">${score} نقطة</div></div>
+const {c,q:[q,o,cr]}=list[i],N=list.length;
+hidden=[];locked=false;left=20;
+app.innerHTML=`<div class="top"><button class="back" id="bk" aria-label="رجوع">✕</button><div style="flex:1"><div class="rank">${RANKS[i]}</div><div class="score">${score} نقطة</div></div>
 <div class="timer"><svg width="54" height="54"><circle cx="27" cy="27" r="23" fill="none" stroke="#27415b" stroke-width="5"/><circle id="ring" cx="27" cy="27" r="23" fill="none" stroke="#d2a64a" stroke-width="5" stroke-linecap="round" stroke-dasharray="144.5" stroke-dashoffset="0"/></svg><b id="t">20</b></div></div>
-<div class="ladder">${RANKS.map((r,k)=>`<i class="${k<i?'d':k==i?'c':''}"></i>`).join("")}</div>
-<div class="file" id="file"><span class="tag">قضية ${i+1} · ${cat}</span><p class="q">${q}</p><div id="hint"></div></div>
-<div class="opts" id="opts">${order.map((k,n)=>`<button class="opt" data-k="${k}"><em>${"أبجد"[n]}</em><span>${o[k]}</span><div class="bar"></div></button>`).join("")}</div>
+<div class="ladder">${list.map((r,k)=>`<i class="${k<i?'d':k==i?'c':''}"></i>`).join("")}</div>
+<div class="file"><span class="tag">${DB[c].i} ${c} · قضية ${i+1}/${N}</span><p class="q">${q}</p><div id="hint"></div></div>
+<div class="opts">${shuf(o.map((t,k)=>k)).map((k,n)=>`<button class="opt" data-k="${k}"><em>${"أبجد"[n]}</em><span>${o[k]}</span><div class="bar"></div></button>`).join("")}</div>
 <div class="help"><button id="h1" ${help.clue?"":"disabled"}><b>🔍</b>كشف دليل</button><button id="h2" ${help.wit?"":"disabled"}><b>👥</b>استشارة شاهد</button><button id="h3" ${help.exp?"":"disabled"}><b>🎩</b>اتصال بخبير</button></div><div id="after"></div>`;
+$("#bk").onclick=()=>{clearInterval(timer);home()};
 document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>pick(+b.dataset.k,b));
 $("#h1").onclick=clue;$("#h2").onclick=witness;$("#h3").onclick=expert;
 clearInterval(timer);timer=setInterval(tick,1000)}
 function tick(){left--;$("#t").textContent=left;$("#ring").style.strokeDashoffset=144.5*(1-left/20);if(left<=5)vib(15);if(left<=0){clearInterval(timer);pick(-1)}}
 function use(k,id){help[k]=0;$(id).disabled=true}
-function clue(){if(locked||!help.clue)return;use("clue","#h1");const c=Q[i][3];const w=[0,1,2,3].filter(k=>k!=c).sort(()=>Math.random()-.5).slice(0,2);hidden=w;w.forEach(k=>document.querySelector(`.opt[data-k="${k}"]`).classList.add("gone"));vib(30)}
-function witness(){if(locked||!help.wit)return;use("wit","#h2");const c=Q[i][3];const live=[0,1,2,3].filter(k=>!hidden.includes(k));let p={},r=100,main=45+Math.random()*30|0;live.forEach(k=>p[k]=0);p[c]=main;r-=main;live.filter(k=>k!=c).forEach((k,n,a)=>{const v=n==a.length-1?r:Math.random()*r|0;p[k]=v;r-=v});live.forEach(k=>{const b=document.querySelector(`.opt[data-k="${k}"] .bar`);b.style.width=Math.max(p[k],4)*.45+"%";b.title=p[k]})}
-function expert(){if(locked||!help.exp)return;use("exp","#h3");const c=Q[i][3],live=[0,1,2,3].filter(k=>!hidden.includes(k)&&k!=c);const say=Math.random()<.85?c:live[0];$("#hint").innerHTML=`<div class="hint">🎩 الخبير: «أميل إلى «${Q[i][2][say]}»، لكن القرار لك أيها المحقق.»</div>`}
+const cur=()=>list[i].q;
+function clue(){if(locked||!help.clue)return;use("clue","#h1");const c=cur()[2];hidden=shuf([0,1,2,3].filter(k=>k!=c)).slice(0,2);hidden.forEach(k=>document.querySelector(`.opt[data-k="${k}"]`).classList.add("gone"));vib(30)}
+function witness(){if(locked||!help.wit)return;use("wit","#h2");const c=cur()[2],live=[0,1,2,3].filter(k=>!hidden.includes(k));let p={},r=100,m=45+Math.random()*30|0;p[c]=m;r-=m;live.filter(k=>k!=c).forEach((k,n,a)=>{const v=n==a.length-1?r:Math.random()*r|0;p[k]=v;r-=v});live.forEach(k=>{document.querySelector(`.opt[data-k="${k}"] .bar`).style.width=Math.max(p[k],4)*.45+"%"})}
+function expert(){if(locked||!help.exp)return;use("exp","#h3");const [,o,c]=cur(),alt=[0,1,2,3].filter(k=>!hidden.includes(k)&&k!=c)[0],say=Math.random()<.85?c:alt;$("#hint").innerHTML=`<div class="hint">🎩 الخبير: «أميل إلى «${o[say]}»، لكن القرار لك أيها المحقق.»</div>`}
 function pick(k,btn){
 if(locked)return;locked=true;clearInterval(timer);
-const [cat,q,o,c,f]=Q[i],ok=k===c;
+const [,,c,f]=cur(),ok=k===c,N=list.length;
 document.querySelectorAll(".opt").forEach(b=>{b.style.pointerEvents="none";if(+b.dataset.k===c)b.classList.add("ok")});
 if(btn&&!ok)btn.classList.add("no");
-$("#file").insertAdjacentHTML("beforeend",`<div class="stamp ${ok?'ok':'no'}">${ok?'قضية محلولة':k<0?'انتهى الوقت':'قضية فاشلة'}</div>`);
+$(".file").insertAdjacentHTML("beforeend",`<div class="stamp ${ok?'ok':'no'}">${ok?'قضية محلولة':k<0?'انتهى الوقت':'قضية فاشلة'}</div>`);
 vib(ok?[20]:[80,40,80]);
-if(ok)score+=100*(i+1)+left*5;
-const last=i==Q.length-1;
-$("#after").innerHTML=`<div class="fact"><strong>ملف المعلومة:</strong> ${f}</div><button class="cta next" id="nx">${ok?(last?'أغلق القضية الأخيرة':'القضية التالية'):'انتهى التحقيق'}</button>`;
-$("#nx").onclick=()=>{ok&&!last?(i++,ask()):end(ok)}}
-function end(won){
-const r=won?RANKS[RANKS.length-1]:RANKS[Math.max(i-1,0)];
-app.innerHTML=`<div class="end"><h2 class="k">${won?'أحسنت يا كبير المحققين':'التحقيق لم ينتهِ بعد'}</h2><div class="big">رتبتك: ${won?r:(i?r:'متدرب')}</div><p style="color:#8fa3b8;font-size:18px;margin:0">جمعت ${score} نقطة</p><button class="cta" id="re">تحقيق جديد</button></div>`;
-$("#re").onclick=start}
+if(ok){score+=100*(i+1)+left*5;solved++}
+const last=i==N-1;
+$("#after").innerHTML=`<div class="fact"><strong>ملف المعلومة:</strong> ${f}</div><button class="cta next" id="nx">${ok&&!last?'القضية التالية':last?'إغلاق الملف':'انتهى التحقيق'}</button>`;
+$("#nx").onclick=()=>{ok&&!last?(i++,ask()):end()}}
+function end(){
+const N=list.length,won=solved==N,r=won?RANKS[N-1]:solved?RANKS[solved-1]:RANKS[0];
+save(cat,score,solved);
+app.innerHTML=`<div class="end"><h2 class="k">${won?'أحسنت يا كبير المحققين':'التحقيق لم ينتهِ بعد'}</h2><div class="big">رتبتك: ${r}</div><p style="color:#8fa3b8;font-size:18px;margin:0">حللت ${solved} من ${N} قضايا · ${score} نقطة</p><button class="cta" id="re">أعد التحقيق</button><button class="ghost" id="hm">كل الأقسام</button></div>`;
+$("#re").onclick=()=>start(cat);$("#hm").onclick=home}
 home();
 </script>
 </body>
