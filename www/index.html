@@ -207,6 +207,18 @@ hs.push(await AM.addListener("onRewardedVideoAdDismissed",()=>{rm();adOK=false;p
 hs.push(await AM.addListener("onRewardedVideoAdFailedToShow",()=>{rm();adOK=false;prep();simAd(cb)}));
 await AM.showRewardVideoAd();
 }catch(e){rm();adOK=false;prep();simAd(cb)}}};
+
+const IT="ca-app-pub-3940256099942544/1033173712";let itOK=false;
+async function prepI(){if(!AM)return;try{await AM.prepareInterstitial({adId:IT,isTesting:true});itOK=true}catch(e){itOK=false}}
+setTimeout(prepI,1500);
+Ads.pass=async function(cb){
+if(!(AM&&itOK))return simAd(cb);
+const hs=[],rm=()=>hs.forEach(h=>h&&h.remove&&h.remove()),done=f=>{rm();itOK=false;prepI();f()};
+try{
+hs.push(await AM.addListener("onInterstitialAdDismissed",()=>done(cb)));
+hs.push(await AM.addListener("onInterstitialAdFailedToShow",()=>done(()=>simAd(cb))));
+await AM.showInterstitial();
+}catch(e){done(()=>simAd(cb))}};
 let cat,Qn,i,score,help,timer,left,locked,hidden,solved,gain;
 const lvl=()=>Math.floor(P.xp/150)+1;
 function home(){
@@ -242,7 +254,7 @@ function expert(){if(locked||!help.exp)return;use("exp","#h3");const[,o,c]=cur()
 function adReveal(){if(locked)return;clearInterval(timer);Ads.show(()=>{document.querySelector(`.opt[data-k="${cur()[2]}"]`).classList.add("hintc");run()})}
 function skip(){if(locked)return;clearInterval(timer);
 sheet(`<b class="k">تخطّي هذه القضية؟</b><button class="cta" id="sA">🎬 شاهد إعلان</button><button class="cta alt" id="sC" ${P.coins<30?"disabled":""}>🪙 30 عملة</button><button class="ghost" id="sX">إلغاء</button>`,(close)=>{
-$("#sA").onclick=()=>{close();Ads.show(nxt)};
+$("#sA").onclick=()=>{close();Ads.pass(nxt)};
 $("#sC").onclick=()=>{close();P.coins-=30;sv();nxt()};
 $("#sX").onclick=()=>{close();run()}})}
 function pick(k,btn){
@@ -256,7 +268,7 @@ const fact=`<div class="fact"><strong>ملف المعلومة:</strong> ${f}</di
 if(ok){const g=10;P.coins+=g;P.xp+=10+Math.min(i,20)*2;gain+=g;score+=100*(i+1)+left*5;solved++;sv();
 $("#after").innerHTML=fact+`<div class="gain">👏 أحسنت! +${g} 🪙 · +${10+Math.min(i,20)*2} خبرة</div><button class="cta next" id="nx">القضية التالية</button>`;$("#nx").onclick=nxt}
 else{$("#after").innerHTML=fact+`<div class="resc"><b class="k">حظ أوفر! اعبر المرحلة:</b><button class="cta" id="rA">🎬 شاهد إعلان وتابع</button><button class="cta alt" id="rC" ${P.coins<30?"disabled":""}>🪙 عبور المرحلة بـ 30 كوين</button><button class="ghost" id="rE">أنهِ التحقيق</button></div>`;
-$("#rA").onclick=()=>Ads.show(nxt);
+$("#rA").onclick=()=>Ads.pass(nxt);
 $("#rC").onclick=()=>{P.coins-=30;sv();nxt()};
 $("#rE").onclick=end}}
 function end(){
