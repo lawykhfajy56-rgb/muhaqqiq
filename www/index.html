@@ -73,6 +73,19 @@ button:focus-visible{outline:3px solid var(--brass);outline-offset:2px}
 .back{background:#13283d;border:1.5px solid #34506c;border-radius:50%;width:38px;height:38px;font-size:16px;flex:none}
 .top{gap:12px}
 .ghost{background:none;border:1.5px solid #34506c;border-radius:14px;padding:12px 36px;font-size:17px}
+.hud{display:flex;align-items:center;gap:12px;width:100%;background:#13283d;border:1.5px solid #34506c;border-radius:14px;padding:10px 14px}
+.hud b{color:var(--brass);font-size:18px}.hud small{color:var(--mute)}
+.xp{height:6px;border-radius:3px;background:#27415b;margin-top:6px;overflow:hidden}.xp i{display:block;height:100%;background:var(--brass)}
+.coin{font-family:'Reem Kufi';font-size:20px;color:var(--brass)}
+.ad2{margin-top:8px}.ad2 button{border-color:var(--brass)}
+.opt.hintc{border-color:#7be0b0;box-shadow:0 0 0 3px #2f7d5b88}
+.gain{text-align:center;color:var(--brass);font-family:'Reem Kufi';margin-top:10px}
+.resc{display:grid;gap:10px;margin-top:12px;text-align:center}
+.cta.alt{background:#1f4d6e;color:#f4ecd8;box-shadow:0 6px 0 #11304a}.cta:disabled{opacity:.35}
+.ad{position:fixed;inset:0;background:#000d;display:grid;place-items:center;z-index:9;text-align:center}
+.ad p{font-family:'Reem Kufi';font-size:26px;margin:0}.ad b{display:block;font-size:56px;color:var(--brass);font-family:'Reem Kufi'}
+.ad small{color:var(--mute)}
+.ad .box{background:var(--bg2);border:1.5px solid var(--brass);border-radius:18px;padding:22px;width:min(88vw,360px);display:grid;gap:12px}
 </style>
 </head>
 <body>
@@ -122,60 +135,95 @@ const DB={
 ["ما الشيء الذي كلما أخذتَ منه كَبُر؟",["الظل","الحفرة","العمر","الدَّين"],1,"كل ما أخرجت منها ترابًا اتسعت أكثر. هذا تفكير جانبي."],
 ["عندك 3 تفاحات وأخذتَ منها 2. كم تفاحة معك؟",["واحدة","اثنتان","ثلاث","خمس"],1,"السؤال يقول «أخذتَ» لا «تركتَ»، فالتفاحتان اللتان أخذتهما معك."]]}
 };
-const MIX="تحقيق شامل",RANKS=["متدرب","محقق","محقق أول","رقيب","مفتش","كبير المحققين"];
+const MIX="تحقيق شامل",RANKS=["متدرب","محقق","محقق أول","رقيب","مفتش","كبير المحققين"],TITLES=[...RANKS,"أسطورة المحققين"];
+const CAP=[["اليابان","طوكيو"],["مصر","القاهرة"],["السعودية","الرياض"],["فرنسا","باريس"],["ألمانيا","برلين"],["إيطاليا","روما"],["إسبانيا","مدريد"],["تركيا","أنقرة"],["كندا","أوتاوا"],["البرازيل","برازيليا"],["الصين","بكين"],["روسيا","موسكو"],["المغرب","الرباط"],["تونس","تونس"],["الأردن","عمّان"],["العراق","بغداد"],["الكويت","مدينة الكويت"],["عُمان","مسقط"],["قطر","الدوحة"],["الإمارات","أبوظبي"],["السودان","الخرطوم"],["لبنان","بيروت"],["اليمن","صنعاء"],["ليبيا","طرابلس"],["الهند","نيودلهي"],["كوريا الجنوبية","سيول"],["الأرجنتين","بوينس آيرس"],["كينيا","نيروبي"],["بريطانيا","لندن"],["اليونان","أثينا"],["باكستان","إسلام آباد"],["إندونيسيا","جاكرتا"],["سوريا","دمشق"],["البحرين","المنامة"]];
+const EL=[["الحديد","Fe"],["الفضة","Ag"],["الصوديوم","Na"],["الكالسيوم","Ca"],["الأكسجين","O"],["الهيدروجين","H"],["الكربون","C"],["النيتروجين","N"],["البوتاسيوم","K"],["النحاس","Cu"],["الرصاص","Pb"],["القصدير","Sn"],["الزئبق","Hg"],["الكبريت","S"],["الهيليوم","He"],["الذهب","Au"]];
+const PL=["عطارد","الزهرة","الأرض","المريخ","المشتري","زحل","أورانوس","نبتون"];
+const CL=["ثدييات","طيور","زواحف","برمائيات","أسماك","حشرات"];
+const AN=[["الدلفين","ثدييات"],["الخفاش","ثدييات"],["النعامة","طيور"],["البطريق","طيور"],["التمساح","زواحف"],["السلحفاة","زواحف"],["الضفدع","برمائيات"],["السلمندر","برمائيات"],["القرش","أسماك"],["حصان البحر","أسماك"],["النحلة","حشرات"],["الفراشة","حشرات"]];
+const EV=[["بناء مدينة بغداد",762],["هجرة النبي ﷺ إلى المدينة",622],["معركة بدر",624],["فتح مكة",630],["معركة اليرموك",636],["معركة حطين",1187],["معركة عين جالوت",1260],["سقوط غرناطة",1492],["ثورة يوليو المصرية",1952],["حرب أكتوبر",1973],["بداية الحرب العالمية الأولى",1914],["بداية الحرب العالمية الثانية",1939]];
+const AU=[["الثلاثية","نجيب محفوظ"],["زقاق المدق","نجيب محفوظ"],["الأيام","طه حسين"],["عودة الروح","توفيق الحكيم"],["النبي","جبران خليل جبران"],["رسالة الغفران","أبو العلاء المعري"],["البخلاء","الجاحظ"],["موسم الهجرة إلى الشمال","الطيب صالح"],["رجال في الشمس","غسان كنفاني"],["العبرات","المنفلوطي"],["كليلة ودمنة","ابن المقفع"]];
 const $=s=>document.querySelector(s),app=$("#app");
-let cat,list,i,score,help,timer,left,locked,hidden,solved;
+let P={xp:0,coins:30,seen:[]};try{Object.assign(P,JSON.parse(localStorage.getItem("mq_p")||"{}"))}catch(e){}
+const sv=()=>{try{localStorage.setItem("mq_p",JSON.stringify(P))}catch(e){}};
 const vib=n=>navigator.vibrate&&navigator.vibrate(n);
-const shuf=a=>a.sort(()=>Math.random()-.5);
+const shuf=a=>a.sort(()=>Math.random()-.5),rnd=(a,b)=>a+Math.random()*(b-a+1)|0,one=a=>a[Math.random()*a.length|0];
+const pk=(a,ex)=>{const r=[];shuf(a.filter(x=>x!==ex)).forEach(x=>{if(r.length<3&&!r.includes(x))r.push(x)});return r};
+const mk=(q,a,pool,f)=>{const o=shuf([a,...pk(pool,a)]);return[q,o,o.indexOf(a),f]};
+const GEN={
+"جغرافيا":[()=>{const[c,k]=one(CAP);return mk(`ما عاصمة ${c}؟`,k,CAP.map(x=>x[1]),`عاصمة ${c} هي ${k}.`)}],
+"علوم":[()=>{const[n,s]=one(EL);return mk(`ما الرمز الكيميائي لعنصر ${n}؟`,s,EL.map(x=>x[1]),`رمز ${n} في الجدول الدوري هو ${s}.`)},()=>{const k=rnd(0,7);return mk(`ما ترتيب كوكب ${PL[k]} في بعده عن الشمس؟`,String(k+1),"12345678".split(""),`${PL[k]} هو الكوكب رقم ${k+1} من الشمس بين ثمانية كواكب.`)}],
+"عالم الحيوان":[()=>{const[a,c]=one(AN);return mk(`إلى أي صنف ينتمي: ${a}؟`,c,CL,`${a} من ${c}.`)}],
+"تاريخ":[()=>{const[e,y]=one(EV),f=v=>v+"م";return mk(`في أي عام وقع: ${e}؟`,f(y),[f(y-rnd(5,40)),f(y+rnd(5,40)),f(y+rnd(41,90)),f(y-rnd(41,90))],`${e} كان عام ${y}م.`)}],
+"آداب":[()=>{const[b,a]=one(AU);return mk(`من مؤلف «${b}»؟`,a,AU.map(x=>x[1]),`«${b}» من تأليف ${a}.`)}],
+"ألغاز":[()=>{if(Math.random()<.5){const a=rnd(2,15),d=rnd(2,9),n=a+d*4,s=[0,1,2,3].map(k=>a+d*k);return mk(`ما العدد التالي: ${s.join("، ")}، ...؟`,String(n),[n-d,n+d,n+1,n-1,n+2].map(String),`القاعدة: نضيف ${d} في كل مرة.`)}const a=rnd(1,4),r=rnd(2,3),n=a*r**4,s=[0,1,2,3].map(k=>a*r**k);return mk(`ما العدد التالي: ${s.join("، ")}، ...؟`,String(n),[n+r,n-r,n*r,n+a].map(String),`القاعدة: نضرب في ${r} في كل مرة.`)},()=>{const a=rnd(6,19),b=rnd(3,9),p=a*b;return mk(`ما ناتج ${a} × ${b}؟`,String(p),[p+a,p-b,p+10,p-10,p+1].map(String),`${a} × ${b} = ${p}.`)}]};
+function nextQ(c){
+const bank=DB[c].q,g=GEN[c];
+for(let t=0;t<30;t++){
+const q=Math.random()<.65?one(g)():one(bank);
+if(!P.seen.includes(q[0])){P.seen.push(q[0]);if(P.seen.length>400)P.seen.shift();sv();return q}}
+return one(g)()}
 function best(){try{return JSON.parse(localStorage.getItem("mq_best"))||{}}catch(e){return{}}}
-function save(c,s,n){try{const b=best();if(!b[c]||s>b[c].s)b[c]={s,n};localStorage.setItem("mq_best",JSON.stringify(b))}catch(e){}}
+function save(c,n){try{const b=best();if(!b[c]||n>b[c].n)b[c]={n};localStorage.setItem("mq_best",JSON.stringify(b))}catch(e){}}
+const Ads={show(cb){/* مؤقت: يُستبدل لاحقاً بإعلان AdMob حقيقي */
+const o=document.createElement("div");o.className="ad";o.innerHTML='<div><p>🎬 إعلان تجريبي</p><b id="ac">5</b><small>سيُستبدل بإعلان حقيقي لاحقاً</small></div>';document.body.appendChild(o);
+let n=5;const t=setInterval(()=>{n--;$("#ac").textContent=n;if(n<=0){clearInterval(t);o.remove();cb()}},1000)}};
+function sheet(h,fn){const s=document.createElement("div");s.className="ad sh";s.innerHTML=`<div class="box">${h}</div>`;document.body.appendChild(s);fn(()=>s.remove(),s)}
+let cat,Qn,i,score,help,timer,left,locked,hidden,solved,gain;
+const lvl=()=>Math.floor(P.xp/150)+1;
 function home(){
-const b=best();
+const b=best(),lv=lvl();
 app.innerHTML=`<div class="home">
-<svg class="lens" viewBox="0 0 120 120" fill="none"><circle cx="50" cy="50" r="32" stroke="#d2a64a" stroke-width="7"/><circle cx="50" cy="50" r="24" fill="#17304a"/><path d="M39 44a14 14 0 0 1 12-9" stroke="#efe6d2" stroke-width="4" stroke-linecap="round"/><path d="M74 74l30 30" stroke="#d2a64a" stroke-width="11" stroke-linecap="round"/></svg>
-<h1 class="k">المحقق</h1>
-<p>اختر ملف القضايا الذي تريد التحقيق فيه</p>
-<div class="grid">${Object.entries(DB).map(([n,v])=>`<button class="card" data-c="${n}"><span class="ic">${v.i}</span><b class="k">${n}</b><small>${v.d}</small><u>${b[n]?`أفضل نتيجة: ${b[n].n}/6 · ${b[n].s}`:`${v.q.length} قضايا`}</u></button>`).join("")}</div>
+<div class="hud"><div style="flex:1;text-align:right"><b class="k">${TITLES[Math.min(lv-1,6)]}</b> <small>مستوى ${lv}</small><div class="xp"><i style="width:${P.xp%150/150*100}%"></i></div></div><div class="coin">🪙 ${P.coins}</div></div>
+<h1 class="k">المحقق</h1><p>اختر ملف القضايا · أسئلة لا تنتهي</p>
+<div class="grid">${Object.entries(DB).map(([n,v])=>`<button class="card" data-c="${n}"><span class="ic">${v.i}</span><b class="k">${n}</b><small>${v.d}</small><u>${b[n]?`أفضل نتيجة: ${b[n].n} قضايا`:'∞ قضايا جديدة'}</u></button>`).join("")}</div>
 <button class="cta" data-c="${MIX}">${MIX}</button></div>`;
 document.querySelectorAll("[data-c]").forEach(e=>e.onclick=()=>start(e.dataset.c))}
-function start(c){
-cat=c;
-list=c==MIX?shuf(Object.entries(DB).map(([n,v])=>({c:n,q:v.q[Math.random()*v.q.length|0]}))):DB[c].q.map(q=>({c,q}));
-i=0;score=0;solved=0;help={clue:1,wit:1,exp:1};ask()}
+function newQ(){const c=cat==MIX?one(Object.keys(DB)):cat;return{c,q:nextQ(c)}}
+function start(c){cat=c;i=0;score=0;solved=0;gain=0;help={clue:1,wit:1,exp:1};Qn=newQ();ask()}
 function ask(){
-const {c,q:[q,o,cr]}=list[i],N=list.length;
-hidden=[];locked=false;left=20;
-app.innerHTML=`<div class="top"><button class="back" id="bk" aria-label="رجوع">✕</button><div style="flex:1"><div class="rank">${RANKS[i]}</div><div class="score">${score} نقطة</div></div>
+const{c,q:[q,o]}=Qn;hidden=[];locked=false;left=20;
+app.innerHTML=`<div class="top"><button class="back" id="bk" aria-label="رجوع">✕</button><div style="flex:1"><div class="rank">${RANKS[Math.min(i,5)]} · مرحلة ${i+1}</div><div class="score">🪙 ${P.coins} · ${score} نقطة</div></div>
 <div class="timer"><svg width="54" height="54"><circle cx="27" cy="27" r="23" fill="none" stroke="#27415b" stroke-width="5"/><circle id="ring" cx="27" cy="27" r="23" fill="none" stroke="#d2a64a" stroke-width="5" stroke-linecap="round" stroke-dasharray="144.5" stroke-dashoffset="0"/></svg><b id="t">20</b></div></div>
-<div class="ladder">${list.map((r,k)=>`<i class="${k<i?'d':k==i?'c':''}"></i>`).join("")}</div>
-<div class="file"><span class="tag">${DB[c].i} ${c} · قضية ${i+1}/${N}</span><p class="q">${q}</p><div id="hint"></div></div>
+<div class="ladder">${[...Array(10)].map((r,k)=>`<i class="${k<i%10?'d':k==i%10?'c':''}"></i>`).join("")}</div>
+<div class="file"><span class="tag">${DB[c].i} ${c}</span><p class="q">${q}</p><div id="hint"></div></div>
 <div class="opts">${shuf(o.map((t,k)=>k)).map((k,n)=>`<button class="opt" data-k="${k}"><em>${"أبجد"[n]}</em><span>${o[k]}</span><div class="bar"></div></button>`).join("")}</div>
-<div class="help"><button id="h1" ${help.clue?"":"disabled"}><b>🔍</b>كشف دليل</button><button id="h2" ${help.wit?"":"disabled"}><b>👥</b>استشارة شاهد</button><button id="h3" ${help.exp?"":"disabled"}><b>🎩</b>اتصال بخبير</button></div><div id="after"></div>`;
+<div class="help"><button id="h1" ${help.clue?"":"disabled"}><b>🔍</b>كشف دليل</button><button id="h2" ${help.wit?"":"disabled"}><b>👥</b>استشارة شاهد</button><button id="h3" ${help.exp?"":"disabled"}><b>🎩</b>اتصال بخبير</button></div>
+<div class="help ad2"><button id="a1"><b>🎬</b>إعلان: اكشف الجواب</button><button id="a2"><b>⏭</b>تخطَّ القضية</button></div><div id="after"></div>`;
 $("#bk").onclick=()=>{clearInterval(timer);home()};
 document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>pick(+b.dataset.k,b));
-$("#h1").onclick=clue;$("#h2").onclick=witness;$("#h3").onclick=expert;
+$("#h1").onclick=clue;$("#h2").onclick=witness;$("#h3").onclick=expert;$("#a1").onclick=adReveal;$("#a2").onclick=skip;
 clearInterval(timer);timer=setInterval(tick,1000)}
+const nxt=()=>{i++;Qn=newQ();ask()},run=()=>{clearInterval(timer);timer=setInterval(tick,1000)};
 function tick(){left--;$("#t").textContent=left;$("#ring").style.strokeDashoffset=144.5*(1-left/20);if(left<=5)vib(15);if(left<=0){clearInterval(timer);pick(-1)}}
 function use(k,id){help[k]=0;$(id).disabled=true}
-const cur=()=>list[i].q;
+const cur=()=>Qn.q;
 function clue(){if(locked||!help.clue)return;use("clue","#h1");const c=cur()[2];hidden=shuf([0,1,2,3].filter(k=>k!=c)).slice(0,2);hidden.forEach(k=>document.querySelector(`.opt[data-k="${k}"]`).classList.add("gone"));vib(30)}
 function witness(){if(locked||!help.wit)return;use("wit","#h2");const c=cur()[2],live=[0,1,2,3].filter(k=>!hidden.includes(k));let p={},r=100,m=45+Math.random()*30|0;p[c]=m;r-=m;live.filter(k=>k!=c).forEach((k,n,a)=>{const v=n==a.length-1?r:Math.random()*r|0;p[k]=v;r-=v});live.forEach(k=>{document.querySelector(`.opt[data-k="${k}"] .bar`).style.width=Math.max(p[k],4)*.45+"%"})}
-function expert(){if(locked||!help.exp)return;use("exp","#h3");const [,o,c]=cur(),alt=[0,1,2,3].filter(k=>!hidden.includes(k)&&k!=c)[0],say=Math.random()<.85?c:alt;$("#hint").innerHTML=`<div class="hint">🎩 الخبير: «أميل إلى «${o[say]}»، لكن القرار لك أيها المحقق.»</div>`}
+function expert(){if(locked||!help.exp)return;use("exp","#h3");const[,o,c]=cur(),alt=[0,1,2,3].filter(k=>!hidden.includes(k)&&k!=c)[0],say=Math.random()<.85?c:alt;$("#hint").innerHTML=`<div class="hint">🎩 الخبير: «أميل إلى «${o[say]}»، لكن القرار لك أيها المحقق.»</div>`}
+function adReveal(){if(locked)return;clearInterval(timer);Ads.show(()=>{document.querySelector(`.opt[data-k="${cur()[2]}"]`).classList.add("hintc");run()})}
+function skip(){if(locked)return;clearInterval(timer);
+sheet(`<b class="k">تخطّي هذه القضية؟</b><button class="cta" id="sA">🎬 شاهد إعلان</button><button class="cta alt" id="sC" ${P.coins<30?"disabled":""}>🪙 30 عملة</button><button class="ghost" id="sX">إلغاء</button>`,(close)=>{
+$("#sA").onclick=()=>{close();Ads.show(nxt)};
+$("#sC").onclick=()=>{close();P.coins-=30;sv();nxt()};
+$("#sX").onclick=()=>{close();run()}})}
 function pick(k,btn){
 if(locked)return;locked=true;clearInterval(timer);
-const [,,c,f]=cur(),ok=k===c,N=list.length;
+const[,,c,f]=cur(),ok=k===c;
 document.querySelectorAll(".opt").forEach(b=>{b.style.pointerEvents="none";if(+b.dataset.k===c)b.classList.add("ok")});
 if(btn&&!ok)btn.classList.add("no");
 $(".file").insertAdjacentHTML("beforeend",`<div class="stamp ${ok?'ok':'no'}">${ok?'قضية محلولة':k<0?'انتهى الوقت':'قضية فاشلة'}</div>`);
 vib(ok?[20]:[80,40,80]);
-if(ok){score+=100*(i+1)+left*5;solved++}
-const last=i==N-1;
-$("#after").innerHTML=`<div class="fact"><strong>ملف المعلومة:</strong> ${f}</div><button class="cta next" id="nx">${ok&&!last?'القضية التالية':last?'إغلاق الملف':'انتهى التحقيق'}</button>`;
-$("#nx").onclick=()=>{ok&&!last?(i++,ask()):end()}}
+const fact=`<div class="fact"><strong>ملف المعلومة:</strong> ${f}</div>`;
+if(ok){const g=5+(left>=12?3:0);P.coins+=g;P.xp+=10+Math.min(i,20)*2;gain+=g;score+=100*(i+1)+left*5;solved++;sv();
+$("#after").innerHTML=fact+`<div class="gain">+${g} 🪙 · +${10+Math.min(i,20)*2} خبرة</div><button class="cta next" id="nx">القضية التالية</button>`;$("#nx").onclick=nxt}
+else{$("#after").innerHTML=fact+`<div class="resc"><b class="k">خسرت القضية، هل تتابع؟</b><button class="cta" id="rA">🎬 شاهد إعلان وتابع</button><button class="cta alt" id="rC" ${P.coins<50?"disabled":""}>🪙 تابع مقابل 50 عملة</button><button class="ghost" id="rE">أنهِ التحقيق</button></div>`;
+$("#rA").onclick=()=>Ads.show(nxt);
+$("#rC").onclick=()=>{P.coins-=50;sv();nxt()};
+$("#rE").onclick=end}}
 function end(){
-const N=list.length,won=solved==N,r=won?RANKS[N-1]:solved?RANKS[solved-1]:RANKS[0];
-save(cat,score,solved);
-app.innerHTML=`<div class="end"><h2 class="k">${won?'أحسنت يا كبير المحققين':'التحقيق لم ينتهِ بعد'}</h2><div class="big">رتبتك: ${r}</div><p style="color:#8fa3b8;font-size:18px;margin:0">حللت ${solved} من ${N} قضايا · ${score} نقطة</p><button class="cta" id="re">أعد التحقيق</button><button class="ghost" id="hm">كل الأقسام</button></div>`;
+save(cat,solved);
+app.innerHTML=`<div class="end"><h2 class="k">انتهى التحقيق</h2><div class="big">رتبتك: ${RANKS[Math.min(Math.max(solved-1,0),5)]}</div><p style="color:#8fa3b8;font-size:18px;margin:0">حللت ${solved} قضايا · ${score} نقطة · ربحت ${gain} 🪙</p><p style="color:#8fa3b8;margin:0">رصيدك: ${P.coins} 🪙</p><button class="cta" id="re">تحقيق جديد (أسئلة جديدة)</button><button class="ghost" id="hm">كل الأقسام</button></div>`;
 $("#re").onclick=()=>start(cat);$("#hm").onclick=home}
 home();
 </script>
