@@ -2,6 +2,6 @@
 <resources>
     <string name="app_name">&#x627;&#x644;&#x645;&#x62D;&#x642;&#x642;</string>
     <string name="title_activity_main">&#x627;&#x644;&#x645;&#x62D;&#x642;&#x642;</string>
-    <string name="package_name">com.yourname.muhaqqiq</string>
-    <string name="custom_url_scheme">com.yourname.muhaqqiq</string>
+    <string name="package_name">com.alialkhafaji98.muhaqqiq</string>
+    <string name="custom_url_scheme">com.alialkhafaji98.muhaqqiq</string>
 </resources>

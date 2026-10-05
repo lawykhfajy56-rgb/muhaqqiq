@@ -1,4 +1,4 @@
-package com.yourname.muhaqqiq;
+package com.alialkhafaji98.muhaqqiq;
 
 import com.getcapacitor.BridgeActivity;
 

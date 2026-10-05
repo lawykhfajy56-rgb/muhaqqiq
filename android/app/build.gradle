@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace = "com.yourname.muhaqqiq"
+    namespace = "com.alialkhafaji98.muhaqqiq"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.yourname.muhaqqiq"
+        applicationId "com.alialkhafaji98.muhaqqiq"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -16,8 +16,19 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        release {
+            def p = new Properties()
+            p.load(new FileInputStream(rootProject.file("keystore.properties")))
+            storeFile file(p['storeFile'])
+            storePassword p['storePassword']
+            keyAlias p['keyAlias']
+            keyPassword p['keyPassword']
+        }
+    }
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
