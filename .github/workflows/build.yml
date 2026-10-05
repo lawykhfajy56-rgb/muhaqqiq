@@ -15,8 +15,26 @@ jobs:
       - run: npm ci
       - run: npx cap sync android
       - run: chmod +x android/gradlew
-      - run: cd android && ./gradlew assembleDebug
+      - run: cd android && ./gradlew assembleDebug assembleRelease bundleRelease
       - uses: actions/upload-artifact@v4
         with:
           name: muhaqqiq-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
+      - name: Sign release
+        env:
+          KS_B64: ${{ secrets.KEYSTORE_BASE64 }}
+          KS_PASS: ${{ secrets.KEYSTORE_PASSWORD }}
+          K_ALIAS: ${{ secrets.KEY_ALIAS }}
+          K_PASS: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          echo "$KS_B64" | base64 -d > $RUNNER_TEMP/release.jks
+          BT=$(ls -d $ANDROID_HOME/build-tools/* | sort -V | tail -1)
+          mkdir -p out
+          $BT/zipalign -p -f 4 android/app/build/outputs/apk/release/app-release-unsigned.apk out/aligned.apk
+          $BT/apksigner sign --ks $RUNNER_TEMP/release.jks --ks-key-alias "$K_ALIAS" --ks-pass env:KS_PASS --key-pass env:K_PASS --out out/muhaqqiq-release.apk out/aligned.apk
+          jarsigner -keystore $RUNNER_TEMP/release.jks -storepass:env KS_PASS -keypass:env K_PASS -signedjar out/muhaqqiq-release.aab android/app/build/outputs/bundle/release/app-release.aab "$K_ALIAS"
+          rm out/aligned.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: muhaqqiq-release
+          path: out/
