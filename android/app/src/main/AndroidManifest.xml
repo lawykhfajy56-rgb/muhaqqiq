@@ -38,4 +38,4 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
-</manifest>
+<queries><intent><action android:name="android.intent.action.TTS_SERVICE"/></intent></queries></manifest>
